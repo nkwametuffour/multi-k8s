@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t nkwametuffour/fib-client-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true nkwametuffour/fib-client-test npm test
+
+after_success:
+  - docker build -t nkwametuffour/fib-multi-client ./client
+  - docker build -t nkwametuffour/fib-multi-nginx ./nginx
+  - docker build -t nkwametuffour/fib-multi-server ./server
+  - docker build -t nkwametuffour/fib-multi-worker ./worker
+  # Log in to Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images (by tag) to Docker Hub
+  - docker push nkwametuffour/fib-multi-client
+  - docker push nkwametuffour/fib-multi-nginx
+  - docker push nkwametuffour/fib-multi-server
+  - docker push nkwametuffour/fib-multi-worker
