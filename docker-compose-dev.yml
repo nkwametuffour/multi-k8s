@@ -16,7 +16,7 @@ services:
       - api
       - client
     ports:
-      - '3050:8001'
+      - '3050:80'
   api:
     build:
       context: ./server

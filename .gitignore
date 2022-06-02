@@ -1,5 +1,7 @@
 */node_modules
 
+docker-compose-dev.yml
+
 # misc
 .DS_Store
 .env.local
